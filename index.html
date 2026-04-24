@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>식품학 퀴즈 허브</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #06090f;
+    --accent-bio: #34d399;
+    --accent-micro: #38bdf8;
+    --text: #e2e8f0;
+    --muted: #475569;
+    --card-bg: #0d1117;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 20% 20%, rgba(52,211,153,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(56,189,248,0.07) 0%, transparent 60%);
+  }
+
+  .hub {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+  }
+
+  header { text-align: center; }
+
+  .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: clamp(28px, 6vw, 48px);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -1px;
+  }
+
+  h1 span { display: block; }
+  .h1-ko { color: var(--text); }
+  .h1-en {
+    font-size: 0.55em;
+    font-family: 'Space Mono', monospace;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-top: 6px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+  }
+
+  @media (max-width: 500px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+
+  .subject-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 36px 28px;
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .subject-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 24px;
+  }
+
+  .subject-card.bio::before { background: radial-gradient(ellipse at top left, rgba(52,211,153,0.12), transparent 70%); }
+  .subject-card.micro::before { background: radial-gradient(ellipse at top left, rgba(56,189,248,0.12), transparent 70%); }
+
+  .subject-card:hover { transform: translateY(-4px); }
+  .subject-card.bio:hover { border-color: rgba(52,211,153,0.4); box-shadow: 0 20px 60px rgba(52,211,153,0.1); }
+  .subject-card.micro:hover { border-color: rgba(56,189,248,0.4); box-shadow: 0 20px 60px rgba(56,189,248,0.1); }
+  .subject-card:hover::before { opacity: 1; }
+
+  .card-icon {
+    font-size: 40px;
+    line-height: 1;
+  }
+
+  .card-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .bio .card-tag { color: var(--accent-bio); }
+  .micro .card-tag { color: var(--accent-micro); }
+
+  .card-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .card-meta {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .card-weeks {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .week-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-weight: 700;
+  }
+  .bio .week-pill { background: rgba(52,211,153,0.12); color: var(--accent-bio); }
+  .micro .week-pill { background: rgba(56,189,248,0.12); color: var(--accent-micro); }
+
+  .card-arrow {
+    margin-top: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.4;
+    transition: opacity 0.2s, gap 0.2s;
+  }
+  .subject-card:hover .card-arrow { opacity: 1; gap: 12px; }
+  .bio .card-arrow { color: var(--accent-bio); }
+  .micro .card-arrow { color: var(--accent-micro); }
+
+  footer {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="hub">
+  <header>
+    <div class="label">Food Science · Quiz Hub</div>
+    <h1>
+      <span class="h1-ko">식품학 퀴즈</span>
+      <span class="h1-en">STUDY FLASHCARDS</span>
+    </h1>
+  </header>
+
+  <div class="cards">
+    <a href="./biochem/index.html" class="subject-card bio">
+      <div class="card-icon">🧪</div>
+      <div class="card-tag">Biochemistry</div>
+      <div class="card-title">식품생화학</div>
+      <div class="card-meta">
+        결합, 지질, 산화환원, 세포호흡 등<br>핵심 개념 객관식 퀴즈
+        <div class="card-weeks">
+          <span class="week-pill">3/28</span>
+          <span class="week-pill">4/4</span>
+          <span class="week-pill">4/11</span>
+        </div>
+      </div>
+      <div class="card-arrow">시작하기 →</div>
+    </a>
+
+    <a href="./microbio/index.html" class="subject-card micro">
+      <div class="card-icon">🦠</div>
+      <div class="card-tag">Microbiology</div>
+      <div class="card-title">식품미생물학</div>
+      <div class="card-meta">
+        원핵/진핵세포, 세균 성장, 진균,<br>배지 배양 등 객관식 퀴즈
+        <div class="card-weeks">
+          <span class="week-pill">3/28</span>
+          <span class="week-pill">4/4</span>
+          <span class="week-pill">4/11</span>
+          <span class="week-pill">4/18</span>
+        </div>
+      </div>
+      <div class="card-arrow">시작하기 →</div>
+    </a>
+  </div>
+
+  <footer>everwriting · Food Science Quiz © 2026</footer>
+</div>
+</body>
+</html>
